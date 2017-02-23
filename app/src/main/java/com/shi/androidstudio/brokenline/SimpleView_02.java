@@ -1,33 +1,74 @@
-上一篇文章简单实现了文字控件,这篇文章在此基础上面继续实现一个图片和文字混合展示的控件。
-####一、在attrs.xml中添加自定义属性：
-```xml
+package com.shi.androidstudio.brokenline;
 
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.media.Image;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 
-    <declare-styleable name="CustomImageView">
-        <attr name="titleText" />
-        <attr name="titleTextColor" />
-        <attr name="titleTextSize" />
-        <attr name="image" />
-        <attr name="imageScaleType" />
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
-    </declare-styleable>
 
-    <attr name="titleText" format="string" />
-    <attr name="titleTextColor" format="color" />
-    <attr name="titleTextSize" format="dimension" />
-    <attr name="image" format="reference" />
-    <attr name="imageScaleType">
-        <enum name="fillXY" value="0" />
-        <enum name="center" value="1" />
-    </attr>
-</resources>
+/**
+ * Created by SHI on 2017/2/22 16:00
+ * 自定义控件学习第二步
+ */
+public class SimpleView_02 extends View {
 
-```
-####二、重写SimpleView_02控件的构造函数
+    /**
+     * 控件的宽
+     */
+    private int mWidth;
+    /**
+     * 控件的高
+     */
+    private int mHeight;
+    /**
+     * 控件中的图片
+     */
+    private Bitmap mImage;
+    /**
+     * 图片的缩放模式
+     */
+    private int mImageScale;
+    private static final int IMAGE_SCALE_FITXY = 0;
+    private static final int IMAGE_SCALE_CENTER = 1;
+    /**
+     * 图片的介绍
+     */
+    private String mTitle;
+    /**
+     * 字体的颜色
+     */
+    private int mTextColor;
+    /**
+     * 字体的大小
+     */
+    private int mTextSize;
 
-```java
+    private Paint mPaint;
+    /**
+     * 对文本的约束
+     */
+    private Rect mRectText;
+    /**
+     * 控制整体布局
+     */
+    private Rect rect;
+
     public SimpleView_02(Context context) {
         //调用自身的构造方法二
         this(context, null);
@@ -105,10 +146,7 @@
         // 得到新的图片
         return Bitmap.createBitmap(mTImage, 0, 0, width, height, matrix, true);
     }
-```
 
-####三、重写SimpleView_02控件的onMeasure
-```java
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //设置宽度
@@ -148,12 +186,9 @@
 
         setMeasuredDimension(mWidth,mHeight);
     }
-```
 
-####四、重写SimpleView_02控件的onDraw
 
-```java
-  @Override
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -208,7 +243,4 @@
         }
 
     }
-```
-####五、效果图
-
-![listview](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/1.png)<br>
+}
