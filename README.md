@@ -6,7 +6,7 @@
  构造3：public View(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
  构造4：public View(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
 ```
-先说一下View的四个构造方法，，第二个方法是在XML布局文件中插入控件使用的，其中attrs参数就是我们在XML中定义控件的属性（包含自定义的属性），其实第二个构造函数也是调用第三个构造函数，这里我在第三个参数传入R.attr.customViewStyle，第三个方法的第三个参数defStyleAttr的意义是从APP或者Activity的Theme中设置的该控件的属性的默认值，如下：
+先说一下View的四个构造方法，，第二个方法，其中attrs参数就是我们在XML中定义控件的属性（包含自定义的属性），其实第二个构造函数也是调用第三个构造函数，这里我在第三个参数传入R.attr.customViewStyle，第三个方法的第三个参数defStyleAttr的意义是从APP或者Activity的Theme中设置的该控件的属性的默认值，如下：
 这是我再attrs文件中定义的属性，也就是上面构造方法中传入的参数
 
 构造函数1
@@ -17,7 +17,7 @@ when creating a view from code.
 构造函数2
 
 This is called when a view is being constructed from an XML file, supplying attributes that were specified in the XML file.
-构造函数2用this()调用第三个构造函数，第三个构造函数用this()调用了第四个构造函数。
+构造函数2是在XML布局文件中插入控件使用的，且用this()调用第构造函数3，构造函数3用this()调用构造函数4。
 
 构造函数3和构造函数4和主题有关
 
