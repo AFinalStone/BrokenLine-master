@@ -18,6 +18,7 @@ import android.view.View;
 
 /**
  * Created by SHI on 2017/2/22 16:00
+ * 自定义控件学习第一步
  */
 public class SimpleView_01 extends View {
 

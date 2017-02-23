@@ -3,6 +3,11 @@ package com.shi.androidstudio.brokenline;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ *
+ * @author
+ * @time 2017/2/22 18:35
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
