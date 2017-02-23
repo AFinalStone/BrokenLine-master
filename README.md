@@ -100,7 +100,7 @@
     }
 ```
 
-####四、重写SimpleView_03控件的onDraw
+####四、重写SimpleView_03控件的onDraw：
 
 ```java
    @Override
@@ -143,18 +143,18 @@
 ```java
     drawCircle(float cx, float cy, float radius, Paint paint)
 ```
-    官方解释：<br>
-    Draw the specified circle using the specified paint.<br>
+    官方解释：<br/>
+    Draw the specified circle using the specified paint.
     使用指定的画笔绘制一个指定的圆,其中cx,cy为圆的圆心，radius为圆的半径,paint为画笔.
 ```java
 	drawArc(RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)
 ```
-	官方解释：<br>
+	官方解释：
     Draw the specified arc, which will be scaled to fit inside the specified oval.
-    使用指定的画笔绘制一个指定圆弧,其中oval为圆弧所在的椭圆对象；系统默认在当前页面建立一个X轴向右，Y轴向下的坐标系，<br>
-    其中的startAngle为圆弧的起始角度,sweepAngle为圆弧的角度，useCenter表示是否显示半径连线，为true则显示圆弧与圆心的半径连线，false不显示。<br>
+    使用指定的画笔绘制一个指定圆弧,其中oval为圆弧所在的椭圆对象；系统默认在当前页面建立一个X轴向右，Y轴向下的坐标系，
+    其中的startAngle为圆弧的起始角度,sweepAngle为圆弧的角度，useCenter表示是否显示半径连线，为true则显示圆弧与圆心的半径连线，false不显示。
     paint为画笔.
 
-####五、效果图
+####五、效果图：
 
 ![效果图](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/GIF.gif)<br>
