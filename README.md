@@ -1,214 +1,160 @@
-上一篇文章简单实现了文字控件,这篇文章在此基础上面继续实现一个图片和文字混合展示的控件。
+上一篇文章实现一个图片和文字混合展示的控件,这篇文章在此基础上面继续实现一个动态的圆弧控件.
 ####一、在attrs.xml中添加自定义属性：
 ```xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="CustomImageView">
-        <attr name="titleText" />
-        <attr name="titleTextColor" />
-        <attr name="titleTextSize" />
-        <attr name="image" />
-        <attr name="imageScaleType" />
+    <attr name="firstColor" format="color" />
+    <attr name="secondColor" format="color" />
+    <attr name="circleLength" format="dimension" />
+    <attr name="speed" format="integer" />
 
+    <declare-styleable name="CustomProgressBar">
+        <attr name="firstColor" />
+        <attr name="secondColor" />
+        <attr name="circleLength" />
+        <attr name="speed" />
     </declare-styleable>
-
-    <attr name="titleText" format="string" />
-    <attr name="titleTextColor" format="color" />
-    <attr name="titleTextSize" format="dimension" />
-    <attr name="image" format="reference" />
-    <attr name="imageScaleType">
-        <enum name="fillXY" value="0" />
-        <enum name="center" value="1" />
-    </attr>
 </resources>
 
 ```
-####二、重写SimpleView_02控件的构造函数
+####二、对应的布局文件：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.shi.androidstudio.brokenline.MainActivity">
+
+
+    <com.shi.androidstudio.brokenline.SimpleView_03
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:firstColor = "@color/colorAccent"
+        app:secondColor = "@color/colorPrimaryDark"
+        app:speed = "20"
+        app:circleLength = "100dp"
+ />
+</LinearLayout>
+
+```
+
+####三、重写SimpleView_03控件的构造函数：
 
 ```java
-    public SimpleView_02(Context context) {
-        //调用自身的构造方法二
+    public SimpleView_03(Context context) {
         this(context, null);
-        Log.e("SimpleView构造方法一", "被执行");
     }
 
-    public SimpleView_02(Context context, AttributeSet attrs) {
-        //调用自身的构造方法三
+    public SimpleView_03(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        Log.e("SimpleView构造方法二", "被执行");
     }
 
-    public SimpleView_02(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SimpleView_03(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Log.e("SimpleView构造方法三", "被执行");
         /**
          * 获得我们所定义的自定义样式属性
          */
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomImageView, defStyleAttr, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomProgressBar, defStyleAttr, 0);
         int length = a.getIndexCount();
         for (int i = 0; i < length; i++) {
             int attr = a.getIndex(i);
-            switch (attr)
-            {
-                case R.styleable.CustomImageView_image:
-                   // mImage = BitmapFactory.decodeResource(getResources(), a.getResourceId(attr, 0));
-                    mImage = scaleBitmap(a, attr);
+            switch (attr) {
+                case R.styleable.CustomProgressBar_firstColor:
+                   mFirstColor =  a.getColor(attr,Color.BLACK);
                     break;
-                case R.styleable.CustomImageView_imageScaleType:
-                    mImageScale = a.getInt(attr, 0);
+                case R.styleable.CustomProgressBar_secondColor:
+                    mSecondColor =  a.getColor(attr,Color.WHITE);
                     break;
-                case R.styleable.CustomImageView_titleText:
-                    mTitle = a.getString(attr);
+                case R.styleable.CustomProgressBar_circleLength:
+                    mCircleLength = a.getDimension(attr, 10.00f);
                     break;
-                case R.styleable.CustomImageView_titleTextColor:
-                    mTextColor = a.getColor(attr, Color.BLACK);
-                    break;
-                case R.styleable.CustomImageView_titleTextSize:
-                    mTextSize = a.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                            16, getResources().getDisplayMetrics()));
+                case R.styleable.CustomProgressBar_speed:
+                    mSpeed = a.getInt(attr,10);
                     break;
             }
         }
         a.recycle();
 
-        /**
-         * 获得绘制文本的宽和高
-         */
-        mPaint = new Paint();
-        mPaint.setTextSize(mTextSize);
-        // mPaint.setColor(mTitleTextColor);
-        mRectText = new Rect();
-        rect = new Rect();
-        mPaint.getTextBounds(mTitle, 0, mTitle.length(), mRectText);
-
-    }
-
-    //对获取到的位图进行大小缩放
-    private Bitmap scaleBitmap(TypedArray a, int attr)
-    {
-
-        Bitmap mTImage = BitmapFactory.decodeResource(getResources(), a.getResourceId(attr, 0));
-        // 获得图片的宽高
-        int width = mTImage.getWidth();
-        int height = mTImage.getHeight();
-        // 设置想要的大小
-        int newWidth = 100;
-        int newHeight = 100;
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片
-        return Bitmap.createBitmap(mTImage, 0, 0, width, height, matrix, true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    mProgress = mProgress % 360;
+                    postInvalidate();
+                    mProgress++;
+                    if (mProgress == 360) {
+                        isNext = !isNext;
+                    }
+                    SystemClock.sleep(mSpeed);
+                }
+            }
+        }).start();
     }
 ```
 
-####三、重写SimpleView_02控件的onMeasure
-```java
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //设置宽度
-        int specMode = MeasureSpec.getMode(widthMeasureSpec);
-        int specSize = MeasureSpec.getSize(widthMeasureSpec);
-        switch (specMode) {
-            case MeasureSpec.EXACTLY:// match_parent , accurate
-                mWidth = specSize;
-                Log.e("模式", "EXACTLY");
-                break;
-            default:
-                int desireWidthByImg = getPaddingLeft() + getPaddingRight()+ mImage.getWidth();
-                int desireWidthByTitle = getPaddingLeft() + getPaddingRight()+ mRectText.width();
-
-                if (specMode == MeasureSpec.AT_MOST){// wrap_content
-                    int desireWidth = Math.max(desireWidthByImg,desireWidthByTitle);
-                    mWidth = Math.min(desireWidth,specSize);
-                    Log.e("模式", "AT_MOST");
-                }
-                break;
-        }
-        //设置高度
-        specMode = MeasureSpec.getMode(heightMeasureSpec);
-        specSize = MeasureSpec.getSize(heightMeasureSpec);
-        switch (specMode) {
-            case MeasureSpec.EXACTLY:// match_parent , accurate
-                mHeight = specSize;
-                break;
-            default:
-                int desireHeight = getPaddingTop() + getPaddingBottom()+ mImage.getHeight()+mRectText.height();
-                if (specMode == MeasureSpec.AT_MOST){// wrap_content
-                    mHeight = Math.min(desireHeight,specSize);
-                    Log.e("模式", "AT_MOST");
-                }
-                break;
-        }
-
-        setMeasuredDimension(mWidth,mHeight);
-    }
-```
-
-####四、重写SimpleView_02控件的onDraw
+####四、重写SimpleView_03控件的onDraw
 
 ```java
-  @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+   @Override
+     protected void onDraw(Canvas canvas) {
+         Paint mPaint_01 = new Paint();
+         mPaint_01.setAntiAlias(true);                   //设置画笔为无锯齿
+         mPaint_01.setColor(mFirstColor);                  //设置画笔颜色
+         canvas.drawColor(Color.WHITE);                  //白色背景
+         mPaint_01.setStrokeWidth((float) 20);           //线宽
+         mPaint_01.setStyle(Paint.Style.STROKE);
 
-        mPaint.setStrokeWidth(4);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.CYAN);
-        canvas.drawRect(0, 0, getMeasuredWidth(),getMeasuredHeight(), mPaint);
+         int centerX = getMeasuredWidth()/2;
+         int centerY = getMeasuredHeight()/2;
 
-        rect.left = getPaddingLeft();
-        rect.right = mWidth-getPaddingRight();
-        rect.top = getPaddingTop();
-        rect.bottom = mHeight-getPaddingBottom();
+         RectF oval = new RectF();                       //RectF对象
+         oval.left = centerX - mCircleLength;            //左边
+         oval.top = centerY - mCircleLength;             //上边
+         oval.right = centerX + mCircleLength;           //右边
+         oval.bottom = centerY + mCircleLength;          //下边
 
-        mPaint.setColor(mTextColor);
-        mPaint.setStyle(Paint.Style.FILL);
+         Paint mPaint_02 = new Paint();
+         mPaint_02.setAntiAlias(true);                   //设置画笔为无锯齿
+         mPaint_02.setColor(mSecondColor);                //设置画笔颜色
+         canvas.drawColor(Color.WHITE);                  //白色背景
+         mPaint_02.setStrokeWidth((float) 20);           //线宽
+         mPaint_02.setStyle(Paint.Style.STROKE);
 
+         if(!isNext){
+             canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_01);
+             canvas.drawArc(oval, 0, mProgress, false, mPaint_02);    //绘制圆弧
+         }else{
+             canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_02);
+             canvas.drawArc(oval, 0, mProgress, false, mPaint_01);    //绘制圆弧
+         }
 
-        /**
-         * 当前设置的宽度小于字体需要的宽度，将字体改为xxx...
-         */
-        if (mRectText.width() > mWidth)
-        {
-            TextPaint paint = new TextPaint(mPaint);
-            String msg = TextUtils.ellipsize(mTitle, paint, (float) mWidth - getPaddingLeft() - getPaddingRight(),
-                    TextUtils.TruncateAt.END).toString();
-            canvas.drawText(msg, getPaddingLeft(), mHeight - getPaddingBottom(), mPaint);
-
-        } else
-        {
-            //正常情况，将字体居中
-            canvas.drawText(mTitle, mWidth / 2 - mRectText.width() * 1.0f / 2, mHeight - getPaddingBottom(), mPaint);
-        }
-
-
-        if(mImageScale == IMAGE_SCALE_FITXY){
-            rect.bottom -= mRectText.height();
-            canvas.drawBitmap(mImage,null,rect,mPaint);
-        }else{
-//            rect.left = mWidth/2-mImage.getWidth()/2;
-//            rect.right = mWidth/2+mImage.getWidth()/2;
-//            rect.top = mHeight/2+mImage.getHeight()/2;
-//            rect.bottom = mHeight/2-mImage.getHeight()/2;
-//            canvas.drawBitmap(mImage,null,rect,mPaint);
-
-            //计算居中的矩形范围
-            rect.left = mWidth / 2 - mImage.getWidth() / 2;
-            rect.right = mWidth / 2 + mImage.getWidth() / 2;
-            rect.top = (mHeight - mRectText.height()) / 2 - mImage.getHeight() / 2;
-            rect.bottom = (mHeight - mRectText.height()) / 2 + mImage.getHeight() / 2;
-
-            canvas.drawBitmap(mImage, null, rect, mPaint);
-        }
-
-    }
+     }
 ```
+
+这里讲解一下drawCircle和drawArc函数：
+```java
+    drawCircle(float cx, float cy, float radius, Paint paint)
+```
+    官方解释：<br>
+    Draw the specified circle using the specified paint.<br>
+    使用指定的画笔绘制一个指定的圆,其中cx,cy为圆的圆心，radius为圆的半径,paint为画笔.
+```java
+	drawArc(RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)
+```
+	官方解释：<br>
+    Draw the specified arc, which will be scaled to fit inside the specified oval.
+    使用指定的画笔绘制一个指定圆弧,其中oval为圆弧所在的椭圆对象；系统默认在当前页面建立一个X轴向右，Y轴向下的坐标系，<br>
+    其中的startAngle为圆弧的起始角度,sweepAngle为圆弧的角度，useCenter表示是否显示半径连线，为true则显示圆弧与圆心的半径连线，false不显示。<br>
+    paint为画笔.
+
 ####五、效果图
 
-![listview](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/1.png)<br>
+![效果图](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/GIF.gif)<br>

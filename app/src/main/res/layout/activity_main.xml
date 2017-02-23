@@ -9,14 +9,14 @@
     tools:context="com.shi.androidstudio.brokenline.MainActivity">
 
 
-    <com.shi.androidstudio.brokenline.SimpleView_02
+    <com.shi.androidstudio.brokenline.SimpleView_03
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        app:image="@mipmap/beautiful"
-        app:imageScaleType="center"
-        app:titleText="美丽图片"
-        app:titleTextColor="#ff0000"
-        app:titleTextSize="40sp" />
+        app:firstColor = "@color/colorAccent"
+        app:secondColor = "@color/colorPrimaryDark"
+        app:speed = "20"
+        app:circleLength = "100dp"
+ />
 
 </LinearLayout>
