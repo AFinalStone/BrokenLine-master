@@ -1,4 +1,5 @@
 一 View类的四个构造函数
+
 - **四个构造方法**
 ```java
  构造1：public View(Context context);
@@ -6,8 +7,7 @@
  构造3：public View(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
  构造4：public View(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
 ```
-先说一下View的四个构造方法，，第二个方法，其中attrs参数就是我们在XML中定义控件的属性（包含自定义的属性），其实第二个构造函数也是调用第三个构造函数，这里我在第三个参数传入R.attr.customViewStyle，第三个方法的第三个参数defStyleAttr的意义是从APP或者Activity的Theme中设置的该控件的属性的默认值，如下：
-这是我再attrs文件中定义的属性，也就是上面构造方法中传入的参数
+先说一下View的四个构造函数：
 
 构造函数1
 
