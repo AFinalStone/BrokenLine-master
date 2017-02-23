@@ -4,12 +4,14 @@
     <attr name="firstColor" format="color" />
     <attr name="secondColor" format="color" />
     <attr name="circleLength" format="dimension" />
+    <attr name="circleWidth" format="dimension" />
     <attr name="speed" format="integer" />
 
     <declare-styleable name="CustomProgressBar">
         <attr name="firstColor" />
         <attr name="secondColor" />
         <attr name="circleLength" />
+        <attr name="circleWidth" />
         <attr name="speed" />
     </declare-styleable>
 </resources>

@@ -8,7 +8,6 @@
     android:gravity="center_horizontal"
     tools:context="com.shi.androidstudio.brokenline.MainActivity">
 
-
     <com.shi.androidstudio.brokenline.SimpleView_03
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +16,7 @@
         app:secondColor = "@color/colorPrimaryDark"
         app:speed = "20"
         app:circleLength = "100dp"
+        app:circleWidth = "20dp"
  />
 
 </LinearLayout>

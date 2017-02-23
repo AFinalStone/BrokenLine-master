@@ -24,13 +24,13 @@ public class SimpleView_03 extends View {
      */
     private int mSecondColor;
     /**
+     * 圈的半径
+     */
+    private float mCircleLength;
+    /**
      * 圈的宽度
      */
-    private float mCircleLength = 100;
-    /**
-     * 画笔
-     */
-    private Paint mPaint_01;
+    private float mCircleWidth;
     /**
      * 当前进度
      */
@@ -72,7 +72,10 @@ public class SimpleView_03 extends View {
                     mSecondColor =  a.getColor(attr,Color.WHITE);
                     break;
                 case R.styleable.CustomProgressBar_circleLength:
-                    mCircleLength = a.getDimension(attr, 10.00f);
+                    mCircleLength = a.getDimension(attr, 50.00f);
+                    break;
+                case R.styleable.CustomProgressBar_circleWidth:
+                    mCircleWidth = a.getDimension(attr, 20.00f);
                     break;
                 case R.styleable.CustomProgressBar_speed:
                     mSpeed = a.getInt(attr,10);
@@ -103,7 +106,7 @@ public class SimpleView_03 extends View {
         mPaint_01.setAntiAlias(true);                   //设置画笔为无锯齿
         mPaint_01.setColor(mFirstColor);                  //设置画笔颜色
         canvas.drawColor(Color.WHITE);                  //白色背景
-        mPaint_01.setStrokeWidth((float) 20);           //线宽
+        mPaint_01.setStrokeWidth(mCircleWidth);           //线宽
         mPaint_01.setStyle(Paint.Style.STROKE);
 
         int centerX = getMeasuredWidth()/2;
@@ -119,7 +122,7 @@ public class SimpleView_03 extends View {
         mPaint_02.setAntiAlias(true);                   //设置画笔为无锯齿
         mPaint_02.setColor(mSecondColor);                //设置画笔颜色
         canvas.drawColor(Color.WHITE);                  //白色背景
-        mPaint_02.setStrokeWidth((float) 20);           //线宽
+        mPaint_02.setStrokeWidth(mCircleWidth);           //线宽
         mPaint_02.setStyle(Paint.Style.STROKE);
 
         if(!isNext){

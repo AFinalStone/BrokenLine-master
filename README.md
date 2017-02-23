@@ -8,12 +8,14 @@
     <attr name="firstColor" format="color" />
     <attr name="secondColor" format="color" />
     <attr name="circleLength" format="dimension" />
+    <attr name="circleWidth" format="dimension" />
     <attr name="speed" format="integer" />
 
     <declare-styleable name="CustomProgressBar">
         <attr name="firstColor" />
         <attr name="secondColor" />
         <attr name="circleLength" />
+        <attr name="circleWidth" />
         <attr name="speed" />
     </declare-styleable>
 </resources>
@@ -32,7 +34,6 @@
     android:gravity="center_horizontal"
     tools:context="com.shi.androidstudio.brokenline.MainActivity">
 
-
     <com.shi.androidstudio.brokenline.SimpleView_03
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +42,9 @@
         app:secondColor = "@color/colorPrimaryDark"
         app:speed = "20"
         app:circleLength = "100dp"
+        app:circleWidth = "20dp"
  />
+
 </LinearLayout>
 
 ```
@@ -74,7 +77,10 @@
                     mSecondColor =  a.getColor(attr,Color.WHITE);
                     break;
                 case R.styleable.CustomProgressBar_circleLength:
-                    mCircleLength = a.getDimension(attr, 10.00f);
+                    mCircleLength = a.getDimension(attr, 50.00f);
+                    break;
+                case R.styleable.CustomProgressBar_circleWidth:
+                    mCircleWidth = a.getDimension(attr, 20.00f);
                     break;
                 case R.styleable.CustomProgressBar_speed:
                     mSpeed = a.getInt(attr,10);
@@ -105,36 +111,36 @@
 ```java
    @Override
      protected void onDraw(Canvas canvas) {
-         Paint mPaint_01 = new Paint();
-         mPaint_01.setAntiAlias(true);                   //设置画笔为无锯齿
-         mPaint_01.setColor(mFirstColor);                  //设置画笔颜色
-         canvas.drawColor(Color.WHITE);                  //白色背景
-         mPaint_01.setStrokeWidth((float) 20);           //线宽
-         mPaint_01.setStyle(Paint.Style.STROKE);
+        Paint mPaint_01 = new Paint();
+        mPaint_01.setAntiAlias(true);                   //设置画笔为无锯齿
+        mPaint_01.setColor(mFirstColor);                  //设置画笔颜色
+        canvas.drawColor(Color.WHITE);                  //白色背景
+        mPaint_01.setStrokeWidth(mCircleWidth);           //线宽
+        mPaint_01.setStyle(Paint.Style.STROKE);
 
-         int centerX = getMeasuredWidth()/2;
-         int centerY = getMeasuredHeight()/2;
+        int centerX = getMeasuredWidth()/2;
+        int centerY = getMeasuredHeight()/2;
 
-         RectF oval = new RectF();                       //RectF对象
-         oval.left = centerX - mCircleLength;            //左边
-         oval.top = centerY - mCircleLength;             //上边
-         oval.right = centerX + mCircleLength;           //右边
-         oval.bottom = centerY + mCircleLength;          //下边
+        RectF oval = new RectF();                       //RectF对象
+        oval.left = centerX - mCircleLength;            //左边
+        oval.top = centerY - mCircleLength;             //上边
+        oval.right = centerX + mCircleLength;           //右边
+        oval.bottom = centerY + mCircleLength;          //下边
 
-         Paint mPaint_02 = new Paint();
-         mPaint_02.setAntiAlias(true);                   //设置画笔为无锯齿
-         mPaint_02.setColor(mSecondColor);                //设置画笔颜色
-         canvas.drawColor(Color.WHITE);                  //白色背景
-         mPaint_02.setStrokeWidth((float) 20);           //线宽
-         mPaint_02.setStyle(Paint.Style.STROKE);
+        Paint mPaint_02 = new Paint();
+        mPaint_02.setAntiAlias(true);                   //设置画笔为无锯齿
+        mPaint_02.setColor(mSecondColor);                //设置画笔颜色
+        canvas.drawColor(Color.WHITE);                  //白色背景
+        mPaint_02.setStrokeWidth(mCircleWidth);           //线宽
+        mPaint_02.setStyle(Paint.Style.STROKE);
 
-         if(!isNext){
-             canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_01);
-             canvas.drawArc(oval, 0, mProgress, false, mPaint_02);    //绘制圆弧
-         }else{
-             canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_02);
-             canvas.drawArc(oval, 0, mProgress, false, mPaint_01);    //绘制圆弧
-         }
+        if(!isNext){
+            canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_01);
+            canvas.drawArc(oval, 0, mProgress, false, mPaint_02);    //绘制圆弧
+        }else{
+            canvas.drawCircle(centerX,centerY,mCircleLength,mPaint_02);
+            canvas.drawArc(oval, 0, mProgress, false, mPaint_01);    //绘制圆弧
+        }
 
      }
 ```
@@ -143,7 +149,7 @@
 ```java
     drawCircle(float cx, float cy, float radius, Paint paint)
 ```
-    官方解释：<br/>
+    官方解释：
     Draw the specified circle using the specified paint.
     使用指定的画笔绘制一个指定的圆,其中cx,cy为圆的圆心，radius为圆的半径,paint为画笔.
 ```java
@@ -151,9 +157,10 @@
 ```
 	官方解释：
     Draw the specified arc, which will be scaled to fit inside the specified oval.
-    使用指定的画笔绘制一个指定圆弧,其中oval为圆弧所在的椭圆对象；系统默认在当前页面建立一个X轴向右，Y轴向下的坐标系，
-    其中的startAngle为圆弧的起始角度,sweepAngle为圆弧的角度，useCenter表示是否显示半径连线，为true则显示圆弧与圆心的半径连线，false不显示。
-    paint为画笔.
+    使用指定的画笔绘制一个指定圆弧,其中oval为圆弧所在的椭圆对象；
+    系统默认在当前页面建立一个X轴向右，Y轴向下的坐标系，其中的startAngle为圆弧的起始角度
+    ,sweepAngle为圆弧的角度，useCenter表示是否显示半径连线，为true则显示圆弧与圆心的半径连线，false不显示
+    ,paint为画笔.
 
 ####五、效果图：
 
