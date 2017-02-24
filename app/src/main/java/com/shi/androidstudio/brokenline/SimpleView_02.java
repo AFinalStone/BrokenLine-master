@@ -205,7 +205,6 @@
 //        mPaint.setColor(mTextColor);
 //        mPaint.setStyle(Paint.Style.FILL);
 //
-//
 //        /**
 //         * 当前设置的宽度小于字体需要的宽度，将字体改为xxx...
 //         */

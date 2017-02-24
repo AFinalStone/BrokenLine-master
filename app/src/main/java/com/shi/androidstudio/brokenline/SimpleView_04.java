@@ -1,76 +1,22 @@
-上一篇文章实现了一个动态的圆弧控件,这篇文章在此基础上面继续实现一个简单的音量增减控件
+package com.shi.androidstudio.brokenline;
 
-####一、首先看一下我们这次要实现的效果图：
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.os.SystemClock;
+import android.util.AttributeSet;
+import android.view.View;
 
-![效果图](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/GIF_Voice.gif)<br>
-
-####二、在attrs.xml中添加自定义属性：
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <attr name="maxVoice" format="integer"/>
-    <attr name="currentVoice" format="integer"/>
-
-    <declare-styleable name="VoiceProgressBar">
-        <attr name="maxVoice" />
-        <attr name="currentVoice" />
-    </declare-styleable>
-</resources>
-
-```
-####三、对应的布局文件：
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal"
-    android:padding="20dp"
-    android:background="@mipmap/beautiful"
-    tools:context="com.shi.androidstudio.brokenline.MainActivity">
-
-    <TextView
-        android:id="@+id/tv_subVoice"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:text="-"
-        android:textSize="26sp" />
-
-    <com.shi.androidstudio.brokenline.SimpleView_04
-        android:id="@+id/simpleView_04"
-        android:layout_width="150dp"
-        android:layout_height="110dp"
-        android:background="#DD3F3F3F"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:currentVoice="5"
-        app:maxVoice="13" />
-
-    <TextView
-        android:id="@+id/tv_addVoice"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:text="+"
-        android:textSize="20sp" />
-</LinearLayout>
-
-```
-
-####四、SimpleView_04自定义控件代码：
-
-```java
-
+/**
+ * Created by SHI on 2017/2/23 14:29
+ */
 public class SimpleView_04 extends View {
     /**
      * 最大音量
@@ -203,7 +149,3 @@ public class SimpleView_04 extends View {
     }
 
 }
-
-```
-
-到这里基本就实现了我们需要的自定义控件了。
