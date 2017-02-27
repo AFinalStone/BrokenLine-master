@@ -12,30 +12,9 @@ import android.widget.TextView;
  */
 public class MainActivity extends AppCompatActivity {
 
-    SimpleView_04 simpleView_04;
-
-    TextView tv_subVoice;
-    TextView tv_addVoice;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        simpleView_04 = (SimpleView_04) findViewById(R.id.simpleView_04);
-        tv_subVoice = (TextView) findViewById(R.id.tv_subVoice);
-        tv_addVoice = (TextView) findViewById(R.id.tv_addVoice);
-        tv_subVoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                simpleView_04.subVoice();
-            }
-        });
-
-        tv_addVoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                simpleView_04.addVoice();
-            }
-        });
     }
 }

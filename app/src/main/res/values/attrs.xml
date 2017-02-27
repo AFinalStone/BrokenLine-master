@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="maxVoice" format="integer"/>
-    <attr name="currentVoice" format="integer"/>
+    <attr name="number_Y" format="integer"/>
+    <attr name="number_X" format="integer"/>
 
-    <declare-styleable name="VoiceProgressBar">
-        <attr name="maxVoice" />
-        <attr name="currentVoice" />
+    <declare-styleable name="BrokenLine">
+        <attr name="number_Y" />
+        <attr name="number_X" />
     </declare-styleable>
-
 
 </resources>

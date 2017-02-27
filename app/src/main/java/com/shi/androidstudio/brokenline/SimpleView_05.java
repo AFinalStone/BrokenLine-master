@@ -1,59 +1,23 @@
-上一篇文章实现了一个动态的圆弧控件,这篇文章在此基础上面继续实现一个简单的音量增减控件
+package com.shi.androidstudio.brokenline;
 
-####一、首先看一下我们这次要实现的效果图：
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 
-![效果图](https://github.com/AFinalStone/BrokenLine-master/blob/master/screenshot/BrokenLine.png)<br>
-
-####二、在attrs.xml中添加自定义属性：
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <attr name="number_Y" format="integer"/>
-    <attr name="number_X" format="integer"/>
-
-    <declare-styleable name="BrokenLine">
-        <attr name="number_Y" />
-        <attr name="number_X" />
-    </declare-styleable>
-
-</resources>
-
-```
-####三、对应的布局文件：
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:padding="20dp"
-    tools:context="com.shi.androidstudio.brokenline.MainActivity">
-
-
-    <com.shi.androidstudio.brokenline.SimpleView_05
-        android:id="@+id/simpleView_05"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:number_X="7"
-        app:number_Y="10"/>
-</LinearLayout>
-
-```
-
-####四、SimpleView_04自定义控件代码：
-
-```java
+import java.util.List;
 
 /**
- * Created by SHI on 2017/2/27 14:29
+ * Created by SHI on 2017/2/23 14:29
  */
 public class SimpleView_05 extends View {
 
@@ -155,8 +119,3 @@ public class SimpleView_05 extends View {
 
 
 }
-
-
-```
-
-到这里基本就实现了我们需要的自定义控件了。
