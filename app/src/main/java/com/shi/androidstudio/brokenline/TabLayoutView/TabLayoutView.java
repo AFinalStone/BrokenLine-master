@@ -1,168 +1,29 @@
-上一篇文章实现了一个简单的音量增减控件,这篇文章在此基础上面继续实现一个类似TabLayout的自定义控件
+package com.shi.androidstudio.brokenline.TabLayoutView;
 
-####一、看一下我们这次要实现的效果图：
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 
-![效果图](/screenshot/GIF.gif)
+import com.shi.androidstudio.brokenline.R;
 
-
-####二、首先看一下如何使用这个控件
-
-- TabLayoutViewActivity.java代码：
-
-```java
-
-public class TabLayoutViewActivity extends AppCompatActivity {
-
-    private ViewPager viewPager;
-    private List<String> listTitle = new ArrayList<String>();
-    private List<Fragment> listFragment = new ArrayList<Fragment>();
-    private MyAdapter adapter;
-    private TabLayoutView tabIndicatorView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab_layout_view);
-        tabIndicatorView = (TabLayoutView) findViewById(R.id.tabIndicatorView);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-
-        for (int i = 0; i < 8; i++) {
-            listTitle.add("标题" + i);
-            TestViewFragment testFragment = new TestViewFragment();
-            testFragment.initView(listTitle.get(i));
-            listFragment.add(testFragment);
-        }
-        adapter = new MyAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        tabIndicatorView.setupWithViewPager(viewPager);
-    }
-
-    private class MyAdapter extends FragmentStatePagerAdapter {
-
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            return listFragment.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return listFragment.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return listTitle.get(position);
-        }
-    }
-}
-
-```
-- TabLayoutViewActivity对应的布局文件activity_tab_layout_view.xml
-
-```xml
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.shi.androidstudio.brokenline.TabLayoutView.TabLayoutView
-        android:id="@+id/tabIndicatorView"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@android:color/white"
-        app:tabTextSize="14sp"
-        app:tabWidth="100dp"
-        app:tabSelectedTextColor="@android:color/holo_purple"
-        app:tabTextColor="@android:color/holo_red_dark"
-        app:tabIndicatorWidth="50dp"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@android:color/holo_red_light"/>
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
-
-</LinearLayout>
-
-```
-
-可以看出，这个TabLayoutView控件和官方提供的TabLayout控件使用流程非常相似，不过功能还是有待完善的，以后如果有需要我们继续完善功能的。
-下面我贴出这个自定义控件的代码，大家也可以自行优化和完善。
-
-####三、TabLayoutView控件书写流程介绍
-
-- 在attrs.xml中添加自定义属性：
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <declare-styleable name="TabLayoutView">
-        <attr name="tabTextColor" format="color" />
-        <attr name="tabSelectedTextColor" format="color" />
-        <attr name="tabWidth" format="dimension" />
-        <attr name="tabTextSize" format="dimension" />
-        <attr name="tabIndicatorColor" format="color" />
-        <attr name="tabIndicatorHeight" format="dimension" />
-        <attr name="tabIndicatorWidth" format="dimension" />
-    </declare-styleable>
-</resources>
-
-```
-这里声明的这些属性名字基本和TabLayout的属性名称一样，目的就是为了让熟悉TabLayout控件的人能够很方便的使用这个控件。
-
-- TabLayoutView控件需要使用一个名为item_tab_radiogroup的xml文件：
-
-```xml
-
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/hs_indicator"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none" >
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <RadioGroup
-            android:id="@+id/rg_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal" />
-
-        <ImageView
-            android:id="@+id/iv_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
-
-</HorizontalScrollView>
-
-```
-
-在这里大概说一下实现流程，从布局文件中可以看出我们自定义的TabLayoutView其实就是一个组合控件，最外围是一个HorizontalScrollView，主要目的是为了TabLayoutView长度超出屏幕的时候可以左右滑动。
-里面使用ImageView来作为TabLayoutView控件的下划线,在滑动或者选择不同条目的时候，通过给ImageView设置并开启属性动画来实现下划线滑动的功能，
-使用RadioGroup，在代码中动态添加RadioButton来作为TabItem，并给RadioGroup设置监听，在里面给控制下划线滑动动画逻辑以及ViewPager的切换逻辑。具体如何实现还是请大家仔细阅读代码自己体会吧。
-
-- TabLayoutView控件代码：
-
-```java
 
 /**
  * 自定义的TabIndicator
@@ -366,8 +227,3 @@ public class TabLayoutView extends RelativeLayout {
     }
 
 }
-
-```
-
-OK，这样简单几步，一个自定义TabLayoutView控件就应运而生了。代码还是比较简陋的，有兴趣的同学可以下载下来看一下。
-最后附上项目下载地址：戳我进入
