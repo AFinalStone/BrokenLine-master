@@ -1,11 +1,11 @@
 > 上一篇文章实现了一个[折线图控件](http://blog.csdn.net/abc6368765/article/details/58089567),这篇文章我们要实现一个类似TabLayout的自定义控件
 
-####一、看一下我们这次要实现的效果图：
+####一、首先看一下我们这次要实现的效果图：
 
 ![效果图](/screenshot/GIF.gif)
 
 
-####二、首先看一下如何使用这个控件
+####二、接着看一下如何使用这个控件
 
 - TabLayoutViewActivity.java代码：
 
