@@ -370,4 +370,3 @@ public class TabLayoutView extends RelativeLayout {
 ```
 
 OK，这样简单几步，一个自定义TabLayoutView控件就应运而生了。代码还是比较简陋的，有兴趣的同学可以下载下来看一下。
-最后附上：
