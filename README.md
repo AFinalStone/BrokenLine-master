@@ -2,7 +2,7 @@
 
 #### 一、首先看一下我们这次要实现的效果图：
 
-![效果图](/screenshot/GIF.gif)
+![效果图](/screen/GIF.gif)
 
 
 #### 二、接着看一下如何使用这个控件
@@ -97,7 +97,7 @@ public class TabLayoutViewActivity extends AppCompatActivity {
 
 ```
 
-可以看出，这个TabLayoutView控件和官方提供的TabLayout控件使用流程非常相似，不过功能还是有待完善的，以后如果有需要我们继续完善功能的。
+可以看出，这个TabLayoutView控件和官方提供的TabLayout控件使用流程非常相似，不过功能还是有待完善的，以后如果有需要我会继续完善功能的。
 下面我贴出这个自定义控件的代码，大家也可以自行优化和完善。
 
 #### 三、TabLayoutView控件书写流程介绍
@@ -370,5 +370,4 @@ public class TabLayoutView extends RelativeLayout {
 ```
 
 OK，这样简单几步，一个自定义TabLayoutView控件就应运而生了。代码还是比较简陋的，有兴趣的同学可以下载下来看一下。
-最后附上项目下载地址：[戳我进入](https://github.com/AFinalStone/BrokenLine-master)
-CSDN demo下载地址：[戳我进入](http://download.csdn.net/detail/abc6368765/9799211)
+最后附上：
